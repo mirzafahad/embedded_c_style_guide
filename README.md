@@ -1,0 +1,1 @@
+# embedded_c_style_guide
