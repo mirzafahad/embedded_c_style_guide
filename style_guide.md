@@ -6,8 +6,8 @@ Limit the line width to 80 characters. This is specially helpful if somebody wan
 <hr>
 
 #### Braces
-- Always use braces around conditional statement and loops. Even if it is an empty statement.
-- Start/Left brace should be on the following line, aligned with end/right brace.
+- Always use braces around conditional statements and loops. Even if it is an empty statement.
+- Start/Left brace should be on the following line, aligned with the end/right brace.
 
 Example:
 
@@ -26,7 +26,7 @@ else
 }
 ```
 
-If you think not using braces cannot be catastrophic, check [Apple's SSL bug](https://blog.codecentric.de/en/2014/02/curly-braces/). The risk of creeping bug can be entirely eliminated by the use of braces. The placement of the left brace on the following line allows for easy visual checking for the corresponding right brace.
+If you think not using braces cannot be catastrophic, check [Apple's SSL bug](https://blog.codecentric.de/en/2014/02/curly-braces/). The risk of creeping bugs can be entirely eliminated by the use of braces. The placement of the left brace on the following line allows for easy visual checking for the corresponding right brace.
 
 <hr>
 
@@ -54,7 +54,7 @@ if ((depthInCm > 0) && (depthInCm < MAX_DEPTH))
 <hr>
 
 #### Keywords to Use Frequently
-- Use `static` keyword for any variables that do not need to be visible outside of the module in which they are declared. For example, any global variable declared in C files. At the module-level, global variables and functions declared static are protected from external use. Heavyhanded use of static in this way thus decreases coupling between modules.
+- Use the `static` keyword for any variables that do not need to be visible outside of the module in which they are declared. For example, any global variable declared in C files. At the module-level, global variables and functions declared static are protected from external use. Heavyhanded use of static in this way thus decreases coupling between modules.
 
 - The `const` keyword shall be used:
     - To declare variables that should not be changed after initialization.
@@ -71,7 +71,7 @@ const uint8_t MAX_COUNT = 10;
 The upside of using const as much as possible is compiler-enforced protection from unintended writes to data that should be read-only.
 
 - The `volatile` keyword shall be used:
-    - To declare a global variable accessible by a interrupt service routine.
+    - To declare a global variable accessible by an interrupt service routine.
     - To declare a global variable accessible by two or more threads.
     - To declare a delay loop counter.
     - To declare a pointer to a memory-mapped I/O peripheral register set.
@@ -86,7 +86,7 @@ Proper use of volatile eliminates a whole class of difficult-to-detect bugs by p
 
 # Comment
 
-- For single-line comments use C++ style i.e., preceded by `//`. You can expand that to 2-3 line comments too. But if it becomes a paragraph, it is probably better use `/*...*/`. Use your good judgment.
+- For single-line comments use C++ style i.e., preceded by `//`. You can expand that to 2-3 line comments too. But if it becomes a paragraph, it is probably better to use `/*...*/`. Use your good judgment.
 - Add comments before every function you write:
 
 ```C
@@ -102,17 +102,17 @@ Proper use of volatile eliminates a whole class of difficult-to-detect bugs by p
 - If it is a debug code use `#ifdef DEBUG ... #endif`
 - All assumptions should be spelled out in comments.
 - Use these markers to highlight issues and make searchable:
-    - “WARNING:” alerts a maintainer there is risk in changing this code. For example, that a delay loop counter’s terminal value was determined empirically and may need to change when the code is ported or the optimization level tweaked.
-    - “NOTE:” provides descriptive comments about the “why” of a chunk of code—as distinguished from the “how” usually placed in comments. For example, that a chunk of driver code deviates from the datasheet because there was an errata in the chip. Or that an assumption is being made by the original programmer.
+    - “WARNING:” alerts a maintainer there is a risk in changing this code. For example, a delay loop counter’s terminal value was determined empirically and may need to change when the code is ported or the optimization level tweaked.
+    - “NOTE:” provides descriptive comments about the “why” of a chunk of code—as distinguished from the “how” usually placed in comments. For example, a chunk of driver code deviates from the datasheet because there was an errata in the chip. Or that an assumption is being made by the original programmer.
     - “TODO:” indicates an area of the code is still under construction and explains what remains to be done. When appropriate, an all-caps programmer name or set of initials may be included before the word TODO (e.g., “MJB TODO:”).
 - Keep the documentation as close to the code as possible. Instead of at beginning of a section/function.
 
 # Functions
 
 #### Naming
-When it comes to name a function:
-- use underscore to separate words and use lowercase letters.
-- if it is a public function prefix with module name.
+When it comes to naming a function:
+- use underscores to separate words and use lowercase letters.
+- if it is a public function prefix with the module name.
 
 Let's say you are writing an LCD driver - `lcd.h`, `lcd.c`.
 
@@ -140,7 +140,7 @@ static bool verify_coordinates_range(uint16_t x, uint16_t y);
 <hr>
 
 #### Divide and Conquer
-"__And__" in the name of a function is a <font color="red">RED</font> flag. Divide it into two functions. Write functions that has one job and one job only. It will be easier to test. For example:
+"__And__" in the name of a function is a <font color="red">RED</font> flag. Divide it into two functions. Write functions that have one job and one job only. It will be easier to test. For example:
 
 ```C
 // Don't do this...
@@ -181,7 +181,7 @@ But for some reason if you need to use it, follow these rules:
 
 The extensive use of parentheses (as shown in the example above) does not eliminate the unintended double increment possibility of a call such as MAX(i++, j++). 
 
-Other risks of macro misuse include comparison of signed and unsigned data or any test of floating-point data. Making matters worse, macros are invisible at run-time and thus impossible to step into within the debugger.
+Other risks of macro misuse include a comparison of signed and unsigned data or any test of floating-point data. Making matters worse, macros are invisible at run-time and thus impossible to step into within the debugger.
 
 <hr>
 
@@ -219,8 +219,8 @@ Each task in a real-time operating system (RTOS) is like a mini-main(), typicall
 
 #### Naming
 
-- Use CamelCase for variable name. Keep the first letter lowercase.
-- If it is a global variable prepand with '__g__'.
+- Use CamelCase for variable naming. Keep the first letter lowercase.
+- If it is a global variable prepend with '__g__'.
 - Function's arguments are local variables.
 
 ```C
