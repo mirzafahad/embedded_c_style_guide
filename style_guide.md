@@ -54,7 +54,7 @@ if ((depthInCm > 0) && (depthInCm < MAX_DEPTH))
 <hr>
 
 #### Keywords to Use Frequently
-- Use the `static` keyword for any variables that do not need to be visible outside of the module in which they are declared. For example, any global variable declared in C files. At the module-level, global variables and functions declared static are protected from external use. Heavyhanded use of static in this way thus decreases coupling between modules.
+- Use the `static` keyword for any variables that do not need to be visible outside of the module in which they are declared. For example, any global variable declared in __C__ files. At the module-level, global variables and functions declared `static` are protected from external use. Heavyhanded use of `static` in this way thus decreases coupling between modules.
 
 - The `const` keyword shall be used:
     - To declare variables that should not be changed after initialization.
@@ -77,11 +77,12 @@ The upside of using const as much as possible is compiler-enforced protection fr
     - To declare a pointer to a memory-mapped I/O peripheral register set.
 
 ```C
-sTimerReg_t volatile * const pTimer = (sTimerReg_t *) HW_TIMER_ADDR;
+volatile sTimerReg_t  *pTimer = (sTimerReg_t *) HW_TIMER_ADDR;
 ```
 
 Proper use of volatile eliminates a whole class of difficult-to-detect bugs by preventing compiler optimizations that would eliminate requested reads or writes to variables or registers.
 
+<hr>
 <br>
 
 # Comment
@@ -98,14 +99,17 @@ Proper use of volatile eliminates a whole class of difficult-to-detect bugs by p
 ******************************************************************************/
 ```
 
-- Don't comment out code. Instead use `#if 0 ... #endif`
-- If it is a debug code use `#ifdef DEBUG ... #endif`
+- Do not comment out code. Instead use `#if 0 ... #endif`
+- If it is a debug code, use `#ifdef DEBUG ... #endif`
 - All assumptions should be spelled out in comments.
-- Use these markers to highlight issues and make searchable:
-    - “WARNING:” alerts a maintainer there is a risk in changing this code. For example, a delay loop counter’s terminal value was determined empirically and may need to change when the code is ported or the optimization level tweaked.
-    - “NOTE:” provides descriptive comments about the “why” of a chunk of code—as distinguished from the “how” usually placed in comments. For example, a chunk of driver code deviates from the datasheet because there was an errata in the chip. Or that an assumption is being made by the original programmer.
-    - “TODO:” indicates an area of the code is still under construction and explains what remains to be done. When appropriate, an all-caps programmer name or set of initials may be included before the word TODO (e.g., “MJB TODO:”).
+- Use these markers to highlight issues and make those searchable:
+    - “__WARNING:__” alerts a maintainer there is a risk in changing this code. For example, a delay loop counter’s terminal value was determined empirically and may need to change when the code is ported or the optimization level tweaked.
+    - “__NOTE:__” provides descriptive comments about the “__why__” of a chunk of code—as distinguished from the “__how__” usually placed in comments. For example, a chunk of driver code deviates from the datasheet because there was an errata in the chip. Or that an assumption is being made by the original programmer.
+    - “__TODO:__” indicates an area of the code is still under construction and explains what remains to be done. When appropriate, an all-caps programmer name or set of initials may be included before the word TODO (e.g., “MJB TODO:”).
 - Keep the documentation as close to the code as possible. Instead of at beginning of a section/function.
+
+<hr>
+<br>
 
 # Functions
 
@@ -154,7 +158,7 @@ static void execute_cmd(eCmdType_t cmd);
 <hr>
 
 #### CONST argument
-If one of your function arguments is a pointer (of something) whose value will not change/alter inside the function, use `const`. For example, if you want to compare `char` array with predefined strings (i.e. no changing of the argument array contents):
+If one of your function arguments is a pointer (to something) whose value will not change/alter inside the function, use `const`. For example, if you want to compare `char` array with predefined strings (i.e. no changing of the argument array contents):
 
 ```C
 static bool is_it_valid_cmd(const char *cmd);
@@ -163,7 +167,7 @@ static bool is_it_valid_cmd(const char *cmd);
 <hr>
 
 #### Parameterized Macro
-Don't use function like macros (Parameterized Macro), if a function can be written to accomplish the same behavior. There are a lot of risks associated with the use of preprocessor defines, and many of them relate to the creation of parameterized macros. Where performance is important, note that C99 added C++’s inline keyword.
+Don't use function-like macros (Parameterized Macro), if a function can be written to accomplish the same behavior. There are a lot of risks associated with the use of preprocessor defines, and many of them relate to the creation of parameterized macros. Where performance is important, note that C99 added C++’s inline keyword.
 
 Example:
 ```C
@@ -194,11 +198,10 @@ Example:
 void alarm_thread(void *p_data)
 {
     eAlarm_t alarm = ALARM_NONE;
-    uint32_t err = OS_NO_ERR;
     
     while(1)
     {
-        alarm = OS_box_pend(alarmMbox, &err);
+        alarm = alarm_task();
         // Process alarm here.
     }
 }
@@ -213,6 +216,7 @@ Each task in a real-time operating system (RTOS) is like a mini-main(), typicall
 
 - To ensure that ISRs are not inadvertently called from other parts of the software (they may corrupt the CPU and call stack if this happens), each ISR function shall be declared static and/or be located at the end of the associated driver module as permitted by the target platform. This is not always possible but keep this in mind.
 
+<hr>
 <br>
 
 # Variables
@@ -225,17 +229,18 @@ Each task in a real-time operating system (RTOS) is like a mini-main(), typicall
 
 ```C
 // Global variable
-static uint8_t gTotalCount = 0;
+static uint8_t gSomeCount = 0;
 
-static void print_count(void)
+static void print_count(uint8_t someMoreCount)
 {
     // Local variable
-    uint8_t currentCount = gTotalCount;
+    uint16_t currentTotalCount = gSomeCount + someMoreCount;
     
-    printf("Current count: %d", currentCount);
+    printf("Current count: %hu", currentTotalCount);
 }
 ```
 
+<hr>
 <br>
 
 # Space
