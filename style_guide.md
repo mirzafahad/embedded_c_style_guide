@@ -12,17 +12,17 @@ Limit the line width to 80 characters. This is specially helpful if somebody wan
 Example:
 
 ```C
-if (depthInft > 10) 
+if (skillLevel > 10) 
 {
-    diveStage = DIVE_DEEP;
+    characterTitle = TITLE_KING;
 }
-else if (depthInft > 0)
+else if (skillLevel > 5)
 {
-    diveStage = DIVE_SHALLOW;
+    characterTitle = TITLE_KNIGHT;
 }
 else
 { 
-    diveStage = DIVE_SURFACE;
+    characterTitle = TITLE_SOLDIER;
 }
 ```
 
@@ -37,9 +37,9 @@ If you think not using braces cannot be catastrophic, check [Apple's SSL bug](ht
 
 Example:
 ```C
-if ((depthInCm > 0) && (depthInCm < MAX_DEPTH))
+if ((killCount > 100) && (detectedByEnemies == false))
 {
-    depthInFt = convert_depth_to_ft(depthInCm);
+    characterTitle = TITLE_SILENT_ASSASSIN;
 }
 ```
 
@@ -63,10 +63,10 @@ if ((depthInCm > 0) && (depthInCm < MAX_DEPTH))
 
  ```C
 // Instead of doing this...
-#define MAX_COUNT (10U)
+#define MAX_SKILL_LEVEL (100U)
 
 // ...do this
-const uint8_t MAX_COUNT = 10;
+const uint8_t MAX_SKILL_LEVEL = 100;
 ```
 The upside of using const as much as possible is compiler-enforced protection from unintended writes to data that should be read-only.
 
@@ -229,18 +229,104 @@ Each task in a real-time operating system (RTOS) is like a mini-main(), typicall
 
 ```C
 // Global variable
-static uint8_t gSomeCount = 0;
+static uint8_t gCurrentDifficultyLevel = LEVEL_HARD;
 
-static void print_count(uint8_t someMoreCount)
+static void cheak_dead_count(uint8_t deadCount)
 {
     // Local variable
-    uint16_t currentTotalCount = gSomeCount + someMoreCount;
-    
-    printf("Current count: %hu", currentTotalCount);
+    uint8_t killCount = get_kill_count();
+
+    if (killCount > deadCount)
+    {
+        // Gamer is probably fine
+        return ;
+    }
+
+    // Died too many times, check difficulty level
+    if (gCurrentDifficultyLevel != LEVEL_NOOB)
+    {
+        printf("Lowering your difficulty level might help!");
+    }
+    else
+    {
+        printf("Have you ever heard of "The Sims"?);
+    }
 }
 ```
 
 <hr>
 <br>
 
-# Space
+# White Space
+
+#### Spaces
+- Each of the keywords `if`, `while`, `for`, `switch`, and `return` shall be followed by one space when there is additional program text on the same line.
+
+- Each semicolon separating the elements of a for statement shall always be followed by one space.
+
+```C
+if (depthInFt > 10){}
+
+while (1){}
+
+for (uint8_t i = 0; i < 10; i++){}
+
+switch (catType){}
+
+return SOUND_MEOW;
+```
+
+- Each of the assignment operators `=`, `+=`, `-=`, `*=`, `/=`, `%=`, `&=`, `|=`, `^=`, `~=`, and `!=` shall always be preceded and followed by one space.
+
+```C
+weaponCount += 1;
+```
+
+- Each of the binary operators +, -, *, /, %, <, <=, >, >=, ==,!=, <<, >>, &, |, ^, &&, and || shall always be preceded and followed by one space.
+
+```C
+HW_ADC_CONF_REG = previousConfiguration | (1 << START_BIT);
+```
+
+- Each of the unary operators ++, --, ! , and ~, shall be written without a space on the operand side.
+
+```C
+bonusCoin++;
+
+if (!playGames)
+{
+    return SAD_EMOJI;
+}
+```
+
+
+- The ? and : characters that comprise the ternary operator shall each always be preceded and followed by one space.
+
+```C
+uint32_t find_maximum(uint32_t a, uint32_t b)
+{
+    return ((a > b) ? a : b);
+} 
+```
+
+- The structure pointer and structure member operators (-> and ., respectively) shall always be __without__ surrounding spaces.
+
+- The left and right brackets of the array subscript operator ([ and ]) shall be __without__ surrounding spaces.
+
+- The left and right parentheses of the function call operator shall always be __without__ surrounding spaces.
+
+- Except when at the end of a line, each comma separating function parameters shall always be followed by one space.
+
+- Each semicolon shall follow the statement it terminates __without__ a preceding space.
+
+<hr>
+
+#### Alignment
+
+<hr>
+
+#### Indentation
+
+<hr>
+
+#### Tabs
