@@ -326,8 +326,7 @@ uint32_t find_maximum(uint32_t a, uint32_t b)
 - The names of variables within a series of declarations shall have their first characters aligned.
 - The names of struct and union members shall have their first characters aligned.
 - The assignment operators within a block of adjacent assignment statements shall be aligned.
-- The # in a preprocessor directive shall always be located at the start of a line, though the 
-   directives themselves may be indented within a #if or #ifdef sequence.
+- The `#` in a preprocessor directive shall always be located at the start of a line, though the directives themselves may be indented within a `#if` or `#ifdef` sequence.
 
 Example:
 ```C
@@ -363,9 +362,9 @@ of the line.
 void sys_error_handler(uint8_t err)
 {
     // Purposefully misaligned indentation
-    if ((first_very_long_comparison_here  && 
-        second_very_long_comparison_here) || 
-        third_very_long_comparison_here)
+    if ((first_very_long_comparison_here   && 
+         second_very_long_comparison_here) || 
+         third_very_long_comparison_here)
     {
         ...
     }
@@ -377,12 +376,12 @@ void sys_error_handler(uint8_t err)
 #### Tabs
 
 - The tab character (ASCII 0x09) shall never appear within any source code file.
+- When indents are needed in the source code, align via spaces instead.
 
 Example:
 ```C
 // When tabs are needed inside a string, use the ‘\t’ character.
 #define COPYRIGHT “Copyright (c) 2020 7-Eleven.\tAll rights reserved.”
-// When indents are needed in the source code, align via spaces instead.
 ```
 
 The width of the tab character varies by text editor and programmer preference, making consistent visual layout a continual source of headaches during code reviews and maintenance.
@@ -394,7 +393,7 @@ The width of the tab character varies by text editor and programmer preference, 
 
 #### Naming Conventions
 - All module names shall consist entirely of lowercase letters, numbers, and underscores. No spaces shall appear within the module’s header and source file names.
-- Any module containing a main() function shall have the word “main” as part of its source file name.
+- Any module containing a `main()` function shall have the word “main” as part of its source file name.
 
 Example: `adc.c`, `adc.h`
 
@@ -446,7 +445,7 @@ The C language standard gives all variables and functions global scope by defaul
 
 Example:
 ```C
-typedef sStruct
+typedef struct sStruct
 {
     ...
 }sStruct_t;
@@ -490,7 +489,7 @@ Example:
 #define SOME_CONSTANT  (6U)
 
 uint16_t unsigned_a = 6;
-int16_t signed_b = -9;
+int16_t  signed_b   = -9;
 if (unsigned_a + signed_b < 4)
 {
     // Execution of this block appears reliably logical, as -9 + 6 is -3
@@ -506,11 +505,11 @@ Several details of the manipulation of binary data within signed integer contain
 #### Floating Point
 - Avoid the use of floating point constants and variables whenever possible. Fixed-point math may be an alternative.
 - When floating point calculations are necessary:
-    - Use the C99 type names float32_t, float64_t, and float128_t.
-    - Append an ‘f’ to all single-precision constants (e.g., pi = 3.141592f).
+    - Use the C99 type names `float32_t`, `float64_t`, and `float128_t`.
+    - Append an ‘`f`’ to all single-precision constants (e.g., pi = 3.141592f).
     - Ensure that the compiler supports double precision, if your math depends on it.
     - Never test for equality or inequality of floating point values.
-    - Always invoke the isfinite() macro to check that prior calculations have resulted in neither INFINITY nor NAN.
+    - Always invoke the `isfinite()` macro to check that prior calculations have resulted in neither INFINITY nor NAN.
 
 <hr>
 
@@ -535,7 +534,7 @@ typedef struct sTimer
 
 // Preprocessor check of timer register layout byte count.
 #if ((8 != sizeof(sTimer_t))
-# error sTimer_t struct size incorrect (expected 8 bytes)”
+#error sTimer_t struct size incorrect (expected 8 bytes)”
 #endif
 ```
 
