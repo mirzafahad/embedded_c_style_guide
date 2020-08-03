@@ -77,7 +77,7 @@ The upside of using const as much as possible is compiler-enforced protection fr
     - To declare a pointer to a memory-mapped I/O peripheral register set.
 
 ```C
-volatile sTimerReg_t  *pTimer = (sTimerReg_t *) HW_TIMER_ADDR;
+volatile sTimerReg_t *pTimer = (sTimerReg_t *)HW_TIMER_ADDR;
 ```
 
 Proper use of volatile eliminates a whole class of difficult-to-detect bugs by preventing compiler optimizations that would eliminate requested reads or writes to variables or registers.
@@ -229,7 +229,7 @@ Each task in a real-time operating system (RTOS) is like a mini-main(), typicall
 
 ```C
 // Global variable
-static uint8_t gCurrentDifficultyLevel = LEVEL_HARD;
+static eDifficultyLevel_t gCurrentDifficultyLevel = LEVEL_HARD;
 
 static void cheak_dead_count(uint8_t deadCount)
 {
@@ -323,10 +323,231 @@ uint32_t find_maximum(uint32_t a, uint32_t b)
 
 #### Alignment
 
+- The names of variables within a series of declarations shall have their first characters aligned.
+- The names of struct and union members shall have their first characters aligned.
+- The assignment operators within a block of adjacent assignment statements shall be aligned.
+- The # in a preprocessor directive shall always be located at the start of a line, though the 
+   directives themselves may be indented within a #if or #ifdef sequence.
+
+Example:
+```C
+#ifdef USE_UNICODE_STRINGS
+    #define BUFFER_BYTES 128
+#else
+    #define BUFFER_BYTES 64
+#endif
+
+typedef struct sString
+{
+    uint8_t buffer[BUFFER_BYTES];
+    uint8_t checksum;
+}sString_t;
+
+
+someVar           = 1;
+someVariable2     = 2;
+someMoreVariable3 = 3;
+
+```
+Visual alignments are easy on eyes and emphasizes similarity and also can be seen as a block of
+related lines of code.
 <hr>
 
 #### Indentation
 
+- Each indentation level should align at a multiple of 4 characters from the start
+of the line.
+- Whenever a line of code is too long to fit within the maximum line width, indent the second and any subsequent lines in the most readable manner possible.
+
+```C
+void sys_error_handler(uint8_t err)
+{
+    // Purposefully misaligned indentation
+    if ((first_very_long_comparison_here  && 
+        second_very_long_comparison_here) || 
+        third_very_long_comparison_here)
+    {
+        ...
+    }
+}
+```
+
 <hr>
 
 #### Tabs
+
+- The tab character (ASCII 0x09) shall never appear within any source code file.
+
+Example:
+```C
+// When tabs are needed inside a string, use the ‘\t’ character.
+#define COPYRIGHT “Copyright (c) 2020 7-Eleven.\tAll rights reserved.”
+// When indents are needed in the source code, align via spaces instead.
+```
+
+The width of the tab character varies by text editor and programmer preference, making consistent visual layout a continual source of headaches during code reviews and maintenance.
+
+<hr>
+<br>
+
+# Module Rules
+
+#### Naming Conventions
+- All module names shall consist entirely of lowercase letters, numbers, and underscores. No spaces shall appear within the module’s header and source file names.
+- Any module containing a main() function shall have the word “main” as part of its source file name.
+
+Example: `adc.c`, `adc.h`
+
+<hr>
+
+#### Header Files
+- There shall always be precisely one header file for each source file and they shall always have the same root name.
+- The header file shall identify only the procedures, constants, and data types (macros, #define, typedefs) about which it is strictly necessary for other modules to be informed.
+    - It is a preferred practice that no variable ever be declared (via `extern`) in a header file.
+    - No storage for any variable shall be allocated in a header file.
+- No public header file shall contain a `#include` of any private header file.
+- Each header file shall contain a preprocessor guard against multiple inclusion, as shown in the example below.
+
+Example:
+```C
+#ifndef ADC_H
+#define ADC_H
+...
+#endif // ADC_H
+```
+
+The C language standard gives all variables and functions global scope by default. The downside of this is unnecessary (and dangerous) coupling between modules. To reduce inter-module coupling, keep as many procedures, constants, data types, and variables as possible privately hidden within a module’s source file.
+
+<hr>
+
+#### Source Files
+- Each source file shall be comprised of some or all of the following sections, in the order listed: 
+    - comment block; 
+    - include statements; 
+    - constant and macro definitions; 
+    - static data declarations; 
+    - private function prototypes; 
+    - public function bodies; 
+    - then private function bodies.
+
+- Each source file shall always #include the header file of the same name (e.g., file `adc.c` should `#include “adc.h”`), to allow the compiler to confirm that each public function and its prototype match.
+- Absolute paths shall not be used in include file names.
+- Each source file shall be free of unused include files.
+- No source file shall `#include` another source file.
+
+<hr>
+<br>
+
+# Data Type Rules
+
+#### Naming Conventions
+- The names of all new data types, including structures, unions, and enumerations, shall use camelCase characters, with type at the beginning (s, u, e) and end with ‘_t’.
+- All new structures, unions, and enumerations shall be named via a typedef.
+
+Example:
+```C
+typedef sStruct
+{
+    ...
+}sStruct_t;
+
+typedef enum eEnum
+{
+    ...
+}eEnum_t;
+
+typedef union uUnion
+{
+    ...
+}uUnion_t;
+```
+
+<hr>
+
+#### Fixed-Width Integers
+- Whenever the width, in bits or bytes, of an integer value matters in the program, one of the fixed width data types shall be used in place of char, short, int, long, or long long. 
+
+| Integer Width |  Signed  | Unsigned |
+|---------------|:--------:|---------:|
+|     8 bits    | int8_t   | uint8_t  |
+|    16 bits    | int16_t  | uint16_t |
+|    32 bits    | int32_t  | uint32_t |
+|    64 bits    | int64_t  | uint64_t |
+
+- The keywords `short` and `long` shall not be used.
+- Use of the keyword `char` shall be restricted to the declaration of and operations concerning characters and strings.
+
+<hr>
+
+#### Signed and Unsigned Integers
+- Bit-fields shall not be defined within signed integer types.
+- None of the bitwise operators (i.e., `&`, `|`, `~`, `^`, `<<`, and `>>`) shall be used to manipulate signed integer data.
+- Signed integers shall not be combined with unsigned integers in comparisons or expressions. 
+- Decimal constants using `#define` should be declared with a ‘U’ at the end.
+
+Example:
+```C
+#define SOME_CONSTANT  (6U)
+
+uint16_t unsigned_a = 6;
+int16_t signed_b = -9;
+if (unsigned_a + signed_b < 4)
+{
+    // Execution of this block appears reliably logical, as -9 + 6 is -3
+    ...
+}
+// ... but compilers with 16-bit int may legally perform (0xFFFF – 9) + 6.
+```
+
+Several details of the manipulation of binary data within signed integer containers are implementation-defined behaviors of the ISO C standards. Additionally, the results of mixing signed and unsigned integers can lead to datadependent outcomes like the one in the code above.
+
+<hr>
+
+#### Floating Point
+- Avoid the use of floating point constants and variables whenever possible. Fixed-point math may be an alternative.
+- When floating point calculations are necessary:
+    - Use the C99 type names float32_t, float64_t, and float128_t.
+    - Append an ‘f’ to all single-precision constants (e.g., pi = 3.141592f).
+    - Ensure that the compiler supports double precision, if your math depends on it.
+    - Never test for equality or inequality of floating point values.
+    - Always invoke the isfinite() macro to check that prior calculations have resulted in neither INFINITY nor NAN.
+
+<hr>
+
+#### Structures and Unions
+- Appropriate care shall be taken to prevent the compiler from inserting padding bytes within struct or union types. To know more read [structure packing](https://mirzafahad.github.io/2018-12-11-structure-packing/).
+- Appropriate care shall be taken to prevent the compiler from altering the intended order of the bits within bit-fields.
+
+Example:
+```C
+typedef struct sTimer
+{
+    uint16_t count;    // offset 0
+    uint16_t maxCount; // offset 2
+    uint16_t _unused;  // offset 4
+    uint16_t enable    : 2; // offset 6 bits 15-14
+    uint16_t interrupt : 1; // offset 6 bit 13
+    uint16_t _unused1  : 7; // offset 6 bits 12-6
+    uint16_t complete  : 1; // offset 6 bit 5
+    uint16_t _unused2  : 4; // offset 6 bits 4-1
+    uint16_t periodic  : 1; // offset 6 bit 0
+} sTimer_t;
+
+// Preprocessor check of timer register layout byte count.
+#if ((8 != sizeof(sTimer_t))
+# error sTimer_t struct size incorrect (expected 8 bytes)”
+#endif
+```
+
+<hr>
+
+#### Booleans
+- Boolean variables shall be declared as type bool.
+- Non-Boolean values shall be converted to Boolean via use of relational operators (e.g., `<` or `!=`), not via casts.
+
+Example:
+```C
+#include <stdbool.h>
+...
+bool bInMotion = (0 != speedInMph);
+```
