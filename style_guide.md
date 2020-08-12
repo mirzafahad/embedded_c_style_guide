@@ -1,7 +1,7 @@
 # 1. General Rule
 
 #### 1.1 Line Width
-Limit the line width to 80 characters. This is specially helpful if somebody wants to print codes on a paper.
+Limit the line width to 80 characters. This is especially helpful if somebody wants to print codes on a paper.
 
 <hr>
 
@@ -227,7 +227,7 @@ Each task in a real-time operating system (RTOS) is like a mini-main(), typicall
 - Use camelCase for variable naming. Keep the first letter lowercase.
 - If it is a global variable prepend with '__g__'.
 - Function's arguments are local variables.
-- Macro name should not contain any lowercase letters (only if a `const` can't be used).
+- A macro name should not contain any lowercase letters (only if a `const` cannot be used).
 - No variable shall have a name that begins with an underscore.
 - Each variable’s name shall be descriptive of its purpose.
 
@@ -265,11 +265,11 @@ static void cheak_dead_count(uint8_t deadCount)
 
 #### 4.2 Initialization
 - All variables shall be initialized before use. Don't just assume the C run-time will watch out for you, e.g., by zeroing the value of uninitialized variables on system startup. This is a bad assumption, which can prove dangerous in a mission-critical system. 
-- It is preferable to define local variables as you need them, rather than all at the top of a function. For readability reasons it is better to declare local variables as close as possible to their first use.
-- If global variables are used, their definitions shall be grouped together and placed at the top of a source code file.
+- It is preferable to define local variables as you need them, rather than all at the top of a function. For readability reasons, it is better to declare local variables as close as possible to their first use.
+- If global variables are used, their definitions shall be grouped and placed at the top of a source code file.
 - Any pointer variable lacking an initial address shall be initialized to NULL.
 
-Static analysis tools can scan all of the source code prior to each build, to warn about variables used prior to initialization.
+Static analysis tools can scan all of the source code before each build, to warn about variables used prior to initialization.
 
 <hr>
 <br>
@@ -299,13 +299,13 @@ return SOUND_MEOW;
 weaponCount += 1;
 ```
 
-- Each of the binary operators +, -, *, /, %, <, <=, >, >=, ==,!=, <<, >>, &, |, ^, &&, and || shall always be preceded and followed by one space.
+- Each of the binary operators `+`, `-`, `*`, `/`, `%`, `<`, `<=`, `>`, `>=`, `==`, `!=`, `<<`, `>>`, `&`, `|`, `^`, `&&`, and `||` shall always be preceded and followed by one space.
 
 ```C
 HW_ADC_CONF_REG = previousConfiguration | (1 << START_BIT);
 ```
 
-- Each of the unary operators ++, --, ! , and ~, shall be written without a space on the operand side.
+- Each of the unary operators `++`, `--`, `!`, and `~`, shall be written without a space on the operand side.
 
 ```C
 bonusCoin++;
@@ -317,7 +317,7 @@ if (!playGames)
 ```
 
 
-- The ? and : characters that comprise the ternary operator shall each always be preceded and followed by one space.
+- The `?` and `:` characters that comprise the ternary operator shall each always be preceded and followed by one space.
 
 ```C
 uint32_t find_maximum(uint32_t a, uint32_t b)
@@ -401,7 +401,7 @@ Example:
 #define COPYRIGHT “Copyright (c) 2020 7-Eleven.\tAll rights reserved.”
 ```
 
-The width of the tab character varies by text editor and programmer preference, making consistent visual layout a continual source of headaches during code reviews and maintenance.
+The width of the tab character varies by text editors and programmer preference, making consistent visual layout a continual source of headaches during code reviews and maintenance.
 
 <hr>
 <br>
@@ -481,7 +481,7 @@ typedef union uUnion
 <hr>
 
 #### 7.2 Fixed-Width Integers
-- Whenever the width, in bits or bytes, of an integer value matters in the program, one of the fixed width data types shall be used in place of char, short, int, long, or long long. 
+- Whenever the width, in bits or bytes, of an integer value matters in the program, one of the fixed-width data types shall be used in place of `char`, `short`, `int`, `long`, or `long long`. 
 
 | Integer Width |  Signed  | Unsigned |
 |---------------|:--------:|---------:|
@@ -491,7 +491,7 @@ typedef union uUnion
 |    64 bits    | int64_t  | uint64_t |
 
 - The keywords `short` and `long` shall not be used.
-- Use of the keyword `char` shall be restricted to the declaration of and operations concerning characters and strings.
+- The use of the keyword `char` shall be restricted to the declaration of and operations concerning characters and strings.
 
 <hr>
 
@@ -515,17 +515,17 @@ if (unsigned_a + signed_b < 4)
 // ... but compilers with 16-bit int may legally perform (0xFFFF – 9) + 6.
 ```
 
-Several details of the manipulation of binary data within signed integer containers are implementation-defined behaviors of the ISO C standards. Additionally, the results of mixing signed and unsigned integers can lead to datadependent outcomes like the one in the code above.
+Several details of the manipulation of binary data within signed integer containers are implementation-defined behaviors of the ISO C standards. Additionally, the results of mixing signed and unsigned integers can lead to data-dependent outcomes like the one in the code above.
 
 <hr>
 
 #### 7.4 Floating Point
-- Avoid the use of floating point constants and variables whenever possible. Fixed-point math may be an alternative.
+- Avoid the use of floating-point constants and variables whenever possible. Fixed-point math may be an alternative.
 - When floating point calculations are necessary:
     - Use the C99 type names `float32_t`, `float64_t`, and `float128_t`.
     - Append an ‘`f`’ to all single-precision constants (e.g., pi = 3.141592f).
-    - Ensure that the compiler supports double precision, if your math depends on it.
-    - Never test for equality or inequality of floating point values.
+    - Ensure that the compiler supports double-precision if your math depends on it.
+    - Never test for equality or inequality of floating-point values.
     - Always invoke the `isfinite()` macro to check that prior calculations have resulted in neither INFINITY nor NAN.
 
 <hr>
@@ -559,7 +559,7 @@ typedef struct sTimer
 
 #### 7.6 Booleans
 - Boolean variables shall be declared as type bool.
-- Non-Boolean values shall be converted to Boolean via use of relational operators (e.g., `<` or `!=`), not via casts.
+- Non-Boolean values shall be converted to Boolean via the use of relational operators (e.g., `<` or `!=`), not via casts.
 
 Example:
 ```C
@@ -611,7 +611,7 @@ else
 
 #### 8.3 Switch Statements
 - Each `case`'s content should be enclosed by braces (`{}`).
-- The `break` for each `case` shall be indented to align with the associated `case`, rather than with the contents of the `case` code block. Switch statments are prone to errors such as omitted break statements and unhandled cases. By aligning the `case` labels with their `break` statements it is easier to spot a missing `break`.
+- The `break` for each `case` shall be indented to align with the associated `case`, rather than with the contents of the `case` code block. Switch statements are prone to errors such as omitted break statements and unhandled cases. By aligning the `case` labels with their `break` statements it is easier to spot a missing `break`.
 - All switch statements shall contain a `default` block.
 - Any case designed to fall through to the next shall be commented to clearly explain the absence of the corresponding `break`.
 
@@ -648,7 +648,7 @@ switch (err)
 
 #### 8.4 Loops
 - Magic numbers shall not be used as the initial value or in the endpoint test of a `while`, `do…while`, or `for` loop.
-- With the exception of the initialization of a loop counter in the first clause of a `for` statement and the change to the same variable in the third, no assignment shall be made in any loop’s controlling expression.
+- Except for the initialization of a loop counter in the first clause of a `for` statement and the change to the same variable in the third, no assignment shall be made in any loop’s controlling expression.
 - Infinite loops shall be implemented via controlling expression `while (1)`.
 - Each loop with an empty body shall feature a set of braces enclosing a comment to explain why nothing needs to be done until after the loop terminates.
 
