@@ -7,7 +7,7 @@ Limit the line width to 80 characters. This is especially helpful if somebody wa
 
 #### 1.2 Braces
 - Always use braces around conditional statements and loops. Even if it is an empty statement.
-- Start/Left brace should be on the following line, aligned with the end/right brace.
+- Start (Left) brace should be on the next line, aligned with the end (right) brace.
 
 Example:
 
@@ -33,7 +33,7 @@ If you think not using braces cannot be catastrophic, check [Apple's SSL bug](ht
 #### 1.3 Parentheses
 - Do not rely on C’s operator precedence rules, as they may not be obvious to those who maintain the code. To aid clarity, use parentheses (and/or break long statements into multiple lines of code) to ensure proper execution order within a sequence of operations.
 
-- Unless it is a single identifier or constant, each operand of the logical AND (&&) and logical OR (||) operators shall be surrounded by parentheses.
+- Unless it is a single identifier or constant, each operand of the logical AND (&&) and logical OR (||) operators should be surrounded by parentheses.
 
 Example:
 ```C
@@ -56,7 +56,7 @@ if ((killCount > 100) && (detectedByEnemies == false))
 #### 1.5 Keywords to Use Frequently
 - Use the `static` keyword for any variables that do not need to be visible outside of the module in which they are declared. For example, any global variable declared in __C__ files. At the module-level, global variables and functions declared `static` are protected from external use. Heavyhanded use of `static` in this way thus decreases coupling between modules.
 
-- The `const` keyword shall be used:
+- The `const` keyword should be used:
     - To declare variables that should not be changed after initialization.
     - To define fields in a struct that should not be modified (e.g., in a struct overlay for memory-mapped I/O peripheral registers).
     - As a strongly typed alternative to `#define` for numerical constants.
@@ -70,7 +70,7 @@ const uint8_t MAX_SKILL_LEVEL = 100;
 ```
 The upside of using const as much as possible is compiler-enforced protection from unintended writes to data that should be read-only.
 
-- The `volatile` keyword shall be used:
+- The `volatile` keyword should be used:
     - To declare a global variable accessible by an interrupt service routine.
     - To declare a global variable accessible by two or more threads.
     - To declare a delay loop counter.
@@ -92,12 +92,23 @@ Proper use of volatile eliminates a whole class of difficult-to-detect bugs by p
 
 ```C
 /******************************************************************************
+* @file    File name
 * @brief   Briefly tell what the function does
 * @param   List the arguments
 * @retval  If the function returns anything
 * @note    Anything that needs to be mentiond. Otherwise omit it.
 ******************************************************************************/
 ```
+
+- For multi-line comments use space+asterisk for every line:
+
+```C
+/*
+ * This is a multi-line comments.
+ * This is the 2nd line.
+ * And the 3rd line.
+ */
+ ```
 
 - Do not comment out code. Instead use `#if 0 ... #endif`
 - If it is a debug code, use `#ifdef DEBUG ... #endif`
@@ -132,8 +143,29 @@ eLcdStatus_t LCD_draw_line(uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2);
 
 <hr>
 
-#### 3.2 Limiting scope
-The `static` keyword shall be used to declare all functions that do not need to be visible outside of the module in which they are declared. If it is a private function, use `static`.
+#### 3.2 Alignment
+- Align all function prototypes (with the same/similar functionality) for better readability.
+
+```C
+eStatus_t  set(uint8_t a);
+char*      get(void);
+void       check_something(void);
+```
+
+- When function returns pointer, align asterisk to return type.
+
+```C
+/* OK */
+char* my_func(void);
+
+/* Wrong */
+char *my_func(void);
+```
+
+<hr>
+
+#### 3.3 Limiting scope
+The `static` keyword should be used to declare all functions that do not need to be visible outside of the module in which they are declared. If it is a private function, use `static`.
 
 Example:
 
@@ -144,7 +176,7 @@ static bool verify_coordinates_range(uint16_t x, uint16_t y);
 
 <hr>
 
-#### 3.3 Divide and Conquer
+#### 3.4 Divide and Conquer
 "__And__" in the name of a function is a <font color="red">RED</font> flag. Divide it into two functions. Write functions that have one job and one job only. It will be easier to test. For example:
 
 ```C
@@ -158,7 +190,7 @@ static void execute_cmd(eCmdType_t cmd);
 
 <hr>
 
-#### 3.4 CONST argument
+#### 3.5 CONST argument
 If one of your function arguments is a pointer (to something) whose value will not change/alter inside the function, use `const`. For example, if you want to compare `char` array with predefined strings (i.e. no changing of the argument array contents):
 
 ```C
@@ -167,7 +199,7 @@ static bool is_it_valid_cmd(const char *cmd);
 
 <hr>
 
-#### 3.5 Parameterized Macro
+#### 3.6 Parameterized Macro
 Don't use function-like macros (Parameterized Macro), if a function can be written to accomplish the same behavior. There are a lot of risks associated with the use of preprocessor defines, and many of them relate to the creation of parameterized macros. Where performance is important, note that C99 added C++’s inline keyword.
 
 Example:
@@ -183,6 +215,14 @@ But for some reason if you need to use it, follow these rules:
 - Surround each use of a parameter with parentheses.
 - Try to limit each use of parameter no more than once, to avoid unintended side effects.
 - Never include a transfer of control (e.g., `return` keyword).
+- When macro uses multiple statements, protect it using `do-while (0)` statement.
+
+```C
+#define SET_POINT(p, x, y)  do {    \   // Backslash indicates statement continues in new line
+    (p)->px = (x);                  \
+    (p)->py = (y);                  \
+} while (0)                             // 2 statements. No semicolon after while loop
+```
 
 The extensive use of parentheses (as shown in the example above) does not eliminate the unintended double increment possibility of a call such as MAX(i++, j++). 
 
@@ -190,8 +230,8 @@ Other risks of macro misuse include a comparison of signed and unsigned data or 
 
 <hr>
 
-#### 3.6 Thread of Execution
-All functions that encapsulate threads of execution (a.k.a., tasks, processes) shall be given names ending with `_thread` (or `_task`, `_process`).
+#### 3.7 Thread of Execution
+All functions that encapsulate threads of execution (a.k.a., tasks, processes) should be given names ending with `_thread` (or `_task`, `_process`).
 
 Example:
 
@@ -212,10 +252,10 @@ Each task in a real-time operating system (RTOS) is like a mini-main(), typicall
 
 <hr>
 
-#### 3.7 Interrupt Service Routines
-- All functions that implement ISRs shall be given names ending with “_isr”.
+#### 3.8 Interrupt Service Routines
+- All functions that implement ISRs should be given names ending with “_isr”.
 
-- To ensure that ISRs are not inadvertently called from other parts of the software (they may corrupt the CPU and call stack if this happens), each ISR function shall be declared static and/or be located at the end of the associated driver module as permitted by the target platform. This is not always possible but keep this in mind.
+- To ensure that ISRs are not inadvertently called from other parts of the software (they may corrupt the CPU and call stack if this happens), each ISR function should be declared static and/or be located at the end of the associated driver module as permitted by the target platform. This is not always possible but keep this in mind.
 
 <hr>
 <br>
@@ -228,8 +268,8 @@ Each task in a real-time operating system (RTOS) is like a mini-main(), typicall
 - If it is a global variable prepend with '__g__'.
 - Function's arguments are local variables.
 - A macro name should not contain any lowercase letters (only if a `const` cannot be used).
-- No variable shall have a name that begins with an underscore.
-- Each variable’s name shall be descriptive of its purpose.
+- No variable should have a name that begins with an underscore.
+- Each variable’s name should be descriptive of its purpose.
 
 ```C
 // Macro
@@ -263,11 +303,38 @@ static void cheak_dead_count(uint8_t deadCount)
 
 <hr>
 
-#### 4.2 Initialization
-- All variables shall be initialized before use. Don't just assume the C run-time will watch out for you, e.g., by zeroing the value of uninitialized variables on system startup. This is a bad assumption, which can prove dangerous in a mission-critical system. 
+#### 4.2 Declaration
+- Global variables' definitions should be grouped and placed at the top of a source code file and should be declared as `static`.
+- Do not declare same type of variable on the same line. The cost of placing each declaration on a line of its own is low. By contrast, the risk that either the compiler or a maintainer will misunderstand your intentions is high.
+
+Example:
+```C
+char* x, y; // Was y intended to be a pointer also? Don’t do this.
+```
+
+- Declare pointer variables with asterisk aligned to type.
+
+```C
+char* myVariable;
+```
+
+<hr>
+
+#### 4.3 Initialization
+
+- Do not initialize static and global variables to `0`, compiler will do it for you. When a varianle is declared inside a function it is not initialised.
+
+```C
+static uint8_t a; // Global variable 'a' is set to 0
+
+void foo() 
+{
+    uint8_t b;   // set to whatever happens to be in memory
+}
+```
+
+- Any pointer variable lacking an initial address should be initialized to `NULL`. 
 - It is preferable to define local variables as you need them, rather than all at the top of a function. For readability reasons, it is better to declare local variables as close as possible to their first use.
-- If global variables are used, their definitions shall be grouped and placed at the top of a source code file.
-- Any pointer variable lacking an initial address shall be initialized to NULL.
 
 Static analysis tools can scan all of the source code before each build, to warn about variables used prior to initialization.
 
@@ -277,9 +344,9 @@ Static analysis tools can scan all of the source code before each build, to warn
 # 5. White Space
 
 #### 5.1 Spaces
-- Each of the keywords `if`, `while`, `for`, `switch`, and `return` shall be followed by one space when there is additional program text on the same line.
+- Each of the keywords `if`, `while`, `for`, `switch`, and `return` should be followed by one space when there is additional program text on the same line.
 
-- Each semicolon separating the elements of a for statement shall always be followed by one space.
+- Each semicolon separating the elements of a for statement should always be followed by one space.
 
 ```C
 if (depthInFt > 10){}
@@ -293,19 +360,19 @@ switch (catType){}
 return SOUND_MEOW;
 ```
 
-- Each of the assignment operators `=`, `+=`, `-=`, `*=`, `/=`, `%=`, `&=`, `|=`, `^=`, `~=`, and `!=` shall always be preceded and followed by one space.
+- Each of the assignment operators `=`, `+=`, `-=`, `*=`, `/=`, `%=`, `&=`, `|=`, `^=`, `~=`, and `!=` should always be preceded and followed by one space.
 
 ```C
 weaponCount += 1;
 ```
 
-- Each of the binary operators `+`, `-`, `*`, `/`, `%`, `<`, `<=`, `>`, `>=`, `==`, `!=`, `<<`, `>>`, `&`, `|`, `^`, `&&`, and `||` shall always be preceded and followed by one space.
+- Each of the binary operators `+`, `-`, `*`, `/`, `%`, `<`, `<=`, `>`, `>=`, `==`, `!=`, `<<`, `>>`, `&`, `|`, `^`, `&&`, and `||` should always be preceded and followed by one space.
 
 ```C
 HW_ADC_CONF_REG = previousConfiguration | (1 << START_BIT);
 ```
 
-- Each of the unary operators `++`, `--`, `!`, and `~`, shall be written without a space on the operand side.
+- Each of the unary operators `++`, `--`, `!`, and `~`, should be written without a space on the operand side.
 
 ```C
 bonusCoin++;
@@ -317,7 +384,7 @@ if (!playGames)
 ```
 
 
-- The `?` and `:` characters that comprise the ternary operator shall each always be preceded and followed by one space.
+- The `?` and `:` characters that comprise the ternary operator should each always be preceded and followed by one space.
 
 ```C
 uint32_t find_maximum(uint32_t a, uint32_t b)
@@ -326,24 +393,24 @@ uint32_t find_maximum(uint32_t a, uint32_t b)
 } 
 ```
 
-- The structure pointer and structure member operators (-> and ., respectively) shall always be __without__ surrounding spaces.
+- The structure pointer and structure member operators (-> and ., respectively) should always be __without__ surrounding spaces.
 
-- The left and right brackets of the array subscript operator ([ and ]) shall be __without__ surrounding spaces.
+- The left and right brackets of the array subscript operator ([ and ]) should be __without__ surrounding spaces.
 
-- The left and right parentheses of the function call operator shall always be __without__ surrounding spaces.
+- The left and right parentheses of the function call operator should always be __without__ surrounding spaces.
 
-- Except when at the end of a line, each comma separating function parameters shall always be followed by one space.
+- Except when at the end of a line, each comma separating function parameters should always be followed by one space.
 
-- Each semicolon shall follow the statement it terminates __without__ a preceding space.
+- Each semicolon should follow the statement it terminates __without__ a preceding space.
 
 <hr>
 
 #### 5.2 Alignment
 
-- The names of variables within a series of declarations shall have their first characters aligned.
-- The names of struct and union members shall have their first characters aligned.
-- The assignment operators within a block of adjacent assignment statements shall be aligned.
-- The `#` in a preprocessor directive shall always be located at the start of a line, though the directives themselves may be indented within a `#if` or `#ifdef` sequence.
+- The names of variables within a series of declarations should have their first characters aligned.
+- The names of struct and union members should have their first characters aligned.
+- The assignment operators within a block of adjacent assignment statements should be aligned.
+- The `#` in a preprocessor directive should always be located at the start of a line, though the directives themselves may be indented within a `#if` or `#ifdef` sequence.
 
 Example:
 ```C
@@ -371,8 +438,8 @@ related lines of code.
 
 #### 5.3 Indentation
 
-- Each indentation level should align at a multiple of 4 characters from the start
-of the line.
+- Do not use tabs, use spaces instead.
+- Use 4 spaces per indent level.
 - Whenever a line of code is too long to fit within the maximum line width, indent the second and any subsequent lines in the most readable manner possible.
 
 ```C
@@ -392,13 +459,13 @@ void sys_error_handler(uint8_t err)
 
 #### 5.4 Tabs
 
-- The tab character (ASCII 0x09) shall never appear within any source code file.
+- The tab character (ASCII 0x09) should never appear within any source code file.
 - When indents are needed in the source code, align via spaces instead.
 
 Example:
 ```C
 // When tabs are needed inside a string, use the ‘\t’ character.
-#define COPYRIGHT “Copyright (c) 2020 7-Eleven.\tAll rights reserved.”
+#define COPYRIGHT “Copyright (c) 2020 Fahad Mirza.\tAll rights reserved.”
 ```
 
 The width of the tab character varies by text editors and programmer preference, making consistent visual layout a continual source of headaches during code reviews and maintenance.
@@ -409,35 +476,56 @@ The width of the tab character varies by text editors and programmer preference,
 # 6. Module Rules
 
 #### 6.1 Naming
-- All module names shall consist entirely of lowercase letters, numbers, and underscores. No spaces shall appear within the module’s header and source file names.
-- Any module containing a `main()` function shall have the word “main” as part of its source file name.
+- All module names should consist entirely of lowercase letters, numbers, and underscores. No spaces should appear within the module’s header and source file names.
+- Any module containing a `main()` function should have the word “main” as part of its source file name.
 
 Example: `adc.c`, `adc.h`
 
 <hr>
 
 #### 6.2 Header Files
-- There shall always be precisely one header file for each source file and they shall always have the same root name.
-- The header file shall identify only the procedures, constants, and data types (macros, #define, typedefs) about which it is strictly necessary for other modules to be informed.
+- There should always be precisely one header file for each source file and they should always have the same root name.
+- The header file should identify only the procedures, constants, and data types (macros, #define, typedefs) about which it is strictly necessary for other modules to be informed.
     - It is a preferred practice that no variable ever be declared (via `extern`) in a header file.
-    - No storage for any variable shall be allocated in a header file.
-- No public header file shall contain a `#include` of any private header file.
-- Each header file shall contain a preprocessor guard against multiple inclusion, as shown in the example below.
+    - No storage for any variable should be allocated in a header file.
+- No public header file should contain a `#include` of any private header file.
+- Always use `<` and `>` for C Standard Library include files, eg. `#include <stdlib.h>`.
+- Always use `"..."` for custom libraries, eg. `#include "my_library.h"`
+- Each header file should contain a preprocessor guard against multiple inclusion, as shown in the example below:
 
-Example:
 ```C
 #ifndef ADC_H
 #define ADC_H
 ...
 #endif // ADC_H
 ```
+- If the header file is written specifically for `C`, then include `C++` preprocessor guard. as shown below:
+
+```C
+#ifndef ADC_H
+#define ADC_H
+
+#ifdef __cplusplus
+extern "C" {
+#endif // __cplusplus
+
+...
+
+#ifdef __cplusplus
+}
+#endif // __cplusplus
+
+#endif // ADC_H
+```
 
 The C language standard gives all variables and functions global scope by default. The downside of this is unnecessary (and dangerous) coupling between modules. To reduce inter-module coupling, keep as many procedures, constants, data types, and variables as possible privately hidden within a module’s source file.
+
+A header template file is available to download.
 
 <hr>
 
 #### 6.3 Source Files
-- Each source file shall be comprised of some or all of the following sections, in the order listed: 
+- Each source file should be comprised of some or all of the following sections, in the order listed: 
     - comment block; 
     - include statements; 
     - constant and macro definitions; 
@@ -446,10 +534,12 @@ The C language standard gives all variables and functions global scope by defaul
     - public function bodies; 
     - then private function bodies.
 
-- Each source file shall always #include the header file of the same name (e.g., file `adc.c` should `#include “adc.h”`), to allow the compiler to confirm that each public function and its prototype match.
-- Absolute paths shall not be used in include file names.
-- Each source file shall be free of unused include files.
-- No source file shall `#include` another source file.
+- Each source file should always #include the header file of the same name (e.g., file `adc.c` should `#include “adc.h”`), to allow the compiler to confirm that each public function and its prototype match.
+- Absolute paths should not be used in include file names.
+- Each source file should be free of unused include files.
+- No source file should `#include` another source file.
+
+A source template file is available to download.
 
 <hr>
 <br>
@@ -457,14 +547,15 @@ The C language standard gives all variables and functions global scope by defaul
 # 7. Data Type Rules
 
 #### 7.1 Naming
-- The names of all new data types, including structures, unions, and enumerations, shall use camelCase characters, with type at the beginning (s, u, e) and end with ‘_t’.
-- All new structures, unions, and enumerations shall be named via a typedef.
+- All new structures, unions, and enumerations should be declared via a `typedef` and a `name`.
+- The names of all new data types, including structures, unions, and enumerations, should use camelCase characters, with type at the beginning (s, u, e) and end with `_t`. The basic name doesn't need `_t`.
 
 Example:
 ```C
 typedef struct sStruct
 {
-    ...
+    uint32_t a;
+    uint32_t b;
 }sStruct_t;
 
 typedef enum eEnum
@@ -478,10 +569,19 @@ typedef union uUnion
 }uUnion_t;
 ```
 
+- When initializing structure on declaration, use `C99` initialization style:
+
+```C
+sStruct_t foo_var = {
+    .a = 4,
+    .b = 5,
+};
+```
+
 <hr>
 
 #### 7.2 Fixed-Width Integers
-- Whenever the width, in bits or bytes, of an integer value matters in the program, one of the fixed-width data types shall be used in place of `char`, `short`, `int`, `long`, or `long long`. 
+- Whenever the width, in bits or bytes, of an integer value matters in the program, one of the fixed-width data types should be used in place of `char`, `short`, `int`, `long`, or `long long`. 
 
 | Integer Width |  Signed  | Unsigned |
 |---------------|:--------:|---------:|
@@ -490,15 +590,15 @@ typedef union uUnion
 |    32 bits    | int32_t  | uint32_t |
 |    64 bits    | int64_t  | uint64_t |
 
-- The keywords `short` and `long` shall not be used.
-- The use of the keyword `char` shall be restricted to the declaration of and operations concerning characters and strings.
+- The keywords `short` and `long` should not be used.
+- The use of the keyword `char` should be restricted to the declaration of and operations concerning characters and strings.
 
 <hr>
 
 #### 7.3 Signed and Unsigned Integers
-- Bit-fields shall not be defined within signed integer types.
-- None of the bitwise operators (i.e., `&`, `|`, `~`, `^`, `<<`, and `>>`) shall be used to manipulate signed integer data.
-- Signed integers shall not be combined with unsigned integers in comparisons or expressions. 
+- Bit-fields should not be defined within signed integer types.
+- None of the bitwise operators (i.e., `&`, `|`, `~`, `^`, `<<`, and `>>`) should be used to manipulate signed integer data.
+- Signed integers should not be combined with unsigned integers in comparisons or expressions. 
 - Decimal constants using `#define` should be declared with a ‘U’ at the end.
 
 Example:
@@ -531,8 +631,8 @@ Several details of the manipulation of binary data within signed integer contain
 <hr>
 
 #### 7.5 Structures and Unions
-- Appropriate care shall be taken to prevent the compiler from inserting padding bytes within struct or union types. To know more read [structure packing](https://mirzafahad.github.io/2018-12-11-structure-packing/).
-- Appropriate care shall be taken to prevent the compiler from altering the intended order of the bits within bit-fields.
+- Appropriate care should be taken to prevent the compiler from inserting padding bytes within struct or union types. To know more read [structure packing](https://mirzafahad.github.io/2018-12-11-structure-packing/).
+- Appropriate care should be taken to prevent the compiler from altering the intended order of the bits within bit-fields.
 
 Example:
 ```C
@@ -558,37 +658,28 @@ typedef struct sTimer
 <hr>
 
 #### 7.6 Booleans
-- Boolean variables shall be declared as type bool.
-- Non-Boolean values shall be converted to Boolean via the use of relational operators (e.g., `<` or `!=`), not via casts.
+- Boolean variables should be declared as type bool.
+- Non-Boolean values should be converted to Boolean via the use of relational operators (e.g., `<` or `!=`), not via casts.
 
 Example:
 ```C
 #include <stdbool.h>
 ...
-bool bInMotion = (0 != speedInMph);
+bool inMotion = (0 != speedInMph);
 ```
+
+- Always use `size_t` for length or size variables.
 
 <hr>
 <br>
 
 # 8. Statement Rules
-
-#### 8.1 Variable Declarations
-- The comma operator (,) shall not be used within variable declarations.
-
-Example:
-```C
-char * x, y; // Was y intended to be a pointer also? Don’t do this.
-```
-The cost of placing each declaration on a line of its own is low. By contrast, the risk that either the compiler or a maintainer will misunderstand your intentions is high.
-
-<hr>
-
-#### 8.2 Conditional Statements
+#### 8.1 Conditional Statements
 - It is a preferred practice that the shortest (measured in lines of code) of the `if` and `else if` clauses should be placed first. Long clauses can distract the human eye from the decision-path logic. By putting the shorter clause earlier, the decision path becomes easier to follow. (And easier to follow is always good for reducing bugs.)
-- Nested `if…else` statements shall not be deeper than two levels. Use function calls or switch statements to reduce complexity and aid understanding. Deeply nested `if…else` statements are a sure sign of a complex and fragile state machine implementation. There is always a safer and more readable way to do the same thing.
-- Assignments shall not be made within an `if` or `else if` test.
-- Any `if` statement with an `else if` clause shall end with an `else` clause.
+- Nested `if…else` statements should not be deeper than two levels. Use function calls or switch statements to reduce complexity and aid understanding. Deeply nested `if…else` statements are a sure sign of a complex and fragile state machine implementation. There is always a safer and more readable way to do the same thing.
+- Assignments should not be made within an `if` or `else if` test.
+- Any `if` statement with an `else if` clause should end with an `else` clause.
+- Place opening curly bracket at the next line.
 
 Example:
 ```C
@@ -609,11 +700,11 @@ else
 
 <hr>
 
-#### 8.3 Switch Statements
+#### 8.2 Switch Statements
 - Each `case`'s content should be enclosed by braces (`{}`).
-- The `break` for each `case` shall be indented to align with the associated `case`, rather than with the contents of the `case` code block. Switch statements are prone to errors such as omitted break statements and unhandled cases. By aligning the `case` labels with their `break` statements it is easier to spot a missing `break`.
-- All switch statements shall contain a `default` block.
-- Any case designed to fall through to the next shall be commented to clearly explain the absence of the corresponding `break`.
+- The `break` for each `case` should be indented to align with the associated `case`, rather than with the contents of the `case` code block. Switch statements are prone to errors such as omitted break statements and unhandled cases. By aligning the `case` labels with their `break` statements it is easier to spot a missing `break`.
+- All switch statements should contain a `default` block.
+- Any case designed to fall through to the next should be commented to clearly explain the absence of the corresponding `break`.
 
 Example:
 ```C
@@ -646,21 +737,62 @@ switch (err)
 
 <hr>
 
-#### 8.4 Loops
-- Magic numbers shall not be used as the initial value or in the endpoint test of a `while`, `do…while`, or `for` loop.
-- Except for the initialization of a loop counter in the first clause of a `for` statement and the change to the same variable in the third, no assignment shall be made in any loop’s controlling expression.
-- Infinite loops shall be implemented via controlling expression `while (1)`.
-- Each loop with an empty body shall feature a set of braces enclosing a comment to explain why nothing needs to be done until after the loop terminates.
+#### 8.3 Loops
+- Magic numbers should not be used as the initial value or in the endpoint test of a `while`, `do…while`, or `for` loop.
+- Except for the initialization of a loop counter in the `for` loop and the change to the same variable in the same statement, no assignment should be made in any loop’s controlling expression.
+- Declare counter variables in `for` loop, unless if you need to access the variable later:
+
+```C
+/* OK */
+for (uint8_t i = 0; i < 100; i++)
+{
+    ...  ...  ...
+}
+
+// if you need the variable later, then it is fine
+uint8_t i;
+for (i = 0; i < 100; i+) 
+{
+    ...  ...  ...
+}
+
+if (i == 100) 
+{
+
+}
+
+/* Wrong */
+uint8_t i;
+for (i = 0; i < 100; i++) 
+{
+    ...  ...  ...
+}
+```
+- Infinite loops should be implemented via controlling expression `while (1)`.
+- Empty `while`, `do-while` or `for` loops must include brackets. Empty loop should contain a comment to explain why nothing needs to be done until after the loop terminates.
+
+```C
+/* OK */
+while (*addr & BIT_13) {}    // Wait for bit 13 to be ready
+while (*addr & BIT_13) 
+{
+    // Wait for bit 13 to be ready
+}    
+
+/* Wrong */
+// Wait for bit 13 to be ready
+while (*addr & (1 << 13));    // Curly brackets are missing.
+```
 
 Example:
 ```C
 // No magic number (e.g., “100”) in the loop
-for (uint8_t row = 0; row < 100; row++)
+for (uint8_t row = 0; row < 100; row++)  /* Wrong */
 {
     // Descriptively-named constants prevent defects and aid readability.
 }
 
-for (uint8_t col = 0; col < NUM_COLS; col++)
+for (uint8_t col = 0; col < NUM_COLS; col++) /* OK */
 {
     ...
 }
@@ -670,8 +802,8 @@ It is always important to synchronize the number of loop iterations to the size 
 
 <hr>
 
-#### 8.5 Equivalence Tests
-- When evaluating the equality of a variable against a constant, the constant shall always be placed to the left of the equal-to operator (==).
+#### 8.4 Equivalence Tests
+- When evaluating the equality of a variable against a constant, the constant should always be placed to the left of the equal-to operator (==).
 
 Example:
 ```C
