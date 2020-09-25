@@ -1,28 +1,28 @@
 # Table of Contents
 
   - [1. General Rule](#general-rule)
-    - [1.1 Line Width](#1.1-Line-Width)
-    - [1.2 Braces](#1.2-Braces)
-    - [1.3 Parentheses](#1.3-Parentheses)
-    - [1.4 Keywords to Avoid](#1.4-Keywords-to-Avoid)
-    - [1.5 Keywords to Use Frequently](#1.5-Keywords-to-Use-Frequently)
-  - [2. Comment](#2.-Comment)
-  - [3. Functions](#3.-Functions)
-    - [3.1 Naming](#3.1-Naming)
-    - [3.2 Alignment](#3.2-Alignment)
-    - [3.3 Limiting scope](#3.3-Limiting-scope)
-    - [3.4 Divide and Conquer](#3.4-Divide-and-Conquer)
-    - [3.5 CONST argument](#3.5-CONST-argument)
-    - [3.6 Parameterized Macro](#3.6-Parameterized-Macro)
-    - [3.7 Thread of Execution](#3.7-Thread-of-Execution)
-    - [3.8 Interrupt Service Routines](#3.8-Interrupt-Service-Routines)
-  - [4. Variables](#4.-Variables)
-    - [4.1 Naming](#4.1-Naming)
-    - [4.2 Declaration](#4.2-Declaration)
-    - [4.3 Initialization](#4.3-Initialization)
-  - [5. White Space](#5.-White-Space)
-    - [5.1 Spaces](#5.1-Spaces)
-    - [5.2 Alignment](#5.2-Alignment)
+    - [1.1 Line Width](#line-width)
+    - [1.2 Braces](#braces)
+    - [1.3 Parentheses](#parentheses)
+    - [1.4 Keywords to Avoid](#keywords-to-avoid)
+    - [1.5 Keywords to Use Frequently](#keywords-to-use-frequently)
+  - [2. Comment](#comment)
+  - [3. Functions](#functions)
+    - [3.1 Naming](#functions-naming)
+    - [3.2 Alignment](#functions-alignment)
+    - [3.3 Limiting Scope](#limiting-scope)
+    - [3.4 Divide and Conquer](#divide-and-conquer)
+    - [3.5 CONST argument](#const-argument)
+    - [3.6 Parameterized Macro](#parameterized-macro)
+    - [3.7 Thread of Execution](#thread-of-execution)
+    - [3.8 Interrupt Service Routines](#interrupt-service-routines)
+  - [4. Variables](#variables)
+    - [4.1 Naming](#variables-Naming)
+    - [4.2 Declaration](#declaration)
+    - [4.3 Initialization](#initialization)
+  - [5. White Space](#white-space)
+    - [5.1 Spaces](#spaces)
+    - [5.2 Alignment](#white-space-alignment)
     - [5.3 Indentation](#5.3-Indentation)
     - [5.4 Tabs](#5.4-Tabs)
   - [6. Module Rules](#6.-Module-Rules)
@@ -45,12 +45,12 @@
 
 # 1. General Rule<a name="general-rule"></a>
 
-#### 1.1 Line Width
+#### 1.1 Line Width<a name="line-width"></a>
 Limit the line width to 80 characters. This is especially helpful if somebody wants to print codes on a paper.
 
 <hr>
 
-#### 1.2 Braces
+#### 1.2 Braces<a name="braces"></a>
 - Always use braces around conditional statements and loops. Even if it is an empty statement.
 - Start (Left) brace should be on the next line, aligned with the end (right) brace.
 
@@ -75,7 +75,7 @@ If you think not using braces cannot be catastrophic, check [Apple's SSL bug](ht
 
 <hr>
 
-#### 1.3 Parentheses
+#### 1.3 Parentheses<a name="parentheses"></a>
 - Do not rely on C’s operator precedence rules, as they may not be obvious to those who maintain the code. To aid clarity, use parentheses (and/or break long statements into multiple lines of code) to ensure proper execution order within a sequence of operations.
 
 - Unless it is a single identifier or constant, each operand of the logical AND (&&) and logical OR (||) operators should be surrounded by parentheses.
@@ -90,7 +90,7 @@ if ((killCount > 100) && (detectedByEnemies == false))
 
 <hr>
 
-#### 1.4 Keywords to Avoid
+#### 1.4 Keywords to Avoid<a name="keywords-to-avoid"></a>
 
 - Don't use `goto`. The use of `goto` makes code hard to follow. The occasional use of goto to handle an exceptional circumstance is acceptable if it simplifies and clarifies the code.
 
@@ -98,7 +98,7 @@ if ((killCount > 100) && (detectedByEnemies == false))
 
 <hr>
 
-#### 1.5 Keywords to Use Frequently
+#### 1.5 Keywords to Use Frequently<a name="keywords-to-use-frequently"></a>
 - Use the `static` keyword for any variables that do not need to be visible outside of the module in which they are declared. For example, any global variable declared in __C__ files. At the module-level, global variables and functions declared `static` are protected from external use. Heavyhanded use of `static` in this way thus decreases coupling between modules.
 
 - The `const` keyword should be used:
@@ -130,7 +130,7 @@ Proper use of volatile eliminates a whole class of difficult-to-detect bugs by p
 <hr>
 <br>
 
-# 2. Comment
+# 2. Comment<a name="comment"></a>
 
 - For single-line comments use C++ style i.e., preceded by `//`. You can expand that to 2-3 line comments too. But if it becomes a paragraph, it is probably better to use `/*...*/`. Use your good judgment.
 - Add comments before every function you write:
@@ -167,9 +167,9 @@ Proper use of volatile eliminates a whole class of difficult-to-detect bugs by p
 <hr>
 <br>
 
-# 3. Functions
+# 3. Functions<a name="functions"></a>
 
-#### 3.1 Naming
+#### 3.1 Naming<a name="functions-naming"></a>
 When it comes to naming a function:
 - use underscores to separate words and use lowercase letters.
 - if it is a public function prefix with the module name.
@@ -188,7 +188,7 @@ eLcdStatus_t LCD_draw_line(uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2);
 
 <hr>
 
-#### 3.2 Alignment
+#### 3.2 Alignment<a name="functions-alignment"></a>
 - Align all function prototypes (with the same/similar functionality) for better readability.
 
 ```C
@@ -209,7 +209,7 @@ char *my_func(void);
 
 <hr>
 
-#### 3.3 Limiting scope
+#### 3.3 Limiting Scope<a name="limiting-scope"></a>
 The `static` keyword should be used to declare all functions that do not need to be visible outside of the module in which they are declared. If it is a private function, use `static`.
 
 Example:
@@ -221,7 +221,7 @@ static bool verify_coordinates_range(uint16_t x, uint16_t y);
 
 <hr>
 
-#### 3.4 Divide and Conquer
+#### 3.4 Divide and Conquer<a name="divide-and-conquer"></a>
 "__And__" in the name of a function is a <font color="red">RED</font> flag. Divide it into two functions. Write functions that have one job and one job only. It will be easier to test. For example:
 
 ```C
@@ -235,7 +235,7 @@ static void execute_cmd(eCmdType_t cmd);
 
 <hr>
 
-#### 3.5 CONST argument
+#### 3.5 CONST argument<a name="const-argument"></a>
 If one of your function arguments is a pointer (to something) whose value will not change/alter inside the function, use `const`. For example, if you want to compare `char` array with predefined strings (i.e. no changing of the argument array contents):
 
 ```C
@@ -244,7 +244,7 @@ static bool is_it_valid_cmd(const char *cmd);
 
 <hr>
 
-#### 3.6 Parameterized Macro
+#### 3.6 Parameterized Macro<a name="parameterized-macro"></a>
 Don't use function-like macros (Parameterized Macro), if a function can be written to accomplish the same behavior. There are a lot of risks associated with the use of preprocessor defines, and many of them relate to the creation of parameterized macros. Where performance is important, note that C99 added C++’s inline keyword.
 
 Example:
@@ -275,7 +275,7 @@ Other risks of macro misuse include a comparison of signed and unsigned data or 
 
 <hr>
 
-#### 3.7 Thread of Execution
+#### 3.7 Thread of Execution<a name="thread-of-execution"></a>
 All functions that encapsulate threads of execution (a.k.a., tasks, processes) should be given names ending with `_thread` (or `_task`, `_process`).
 
 Example:
@@ -297,7 +297,7 @@ Each task in a real-time operating system (RTOS) is like a mini-main(), typicall
 
 <hr>
 
-#### 3.8 Interrupt Service Routines
+#### 3.8 Interrupt Service Routines<a name="interrupt-service-routines"></a>
 - All functions that implement ISRs should be given names ending with “_isr”.
 
 - To ensure that ISRs are not inadvertently called from other parts of the software (they may corrupt the CPU and call stack if this happens), each ISR function should be declared static and/or be located at the end of the associated driver module as permitted by the target platform. This is not always possible but keep this in mind.
@@ -305,9 +305,9 @@ Each task in a real-time operating system (RTOS) is like a mini-main(), typicall
 <hr>
 <br>
 
-# 4. Variables
+# 4. Variables<a name="variables"></a>
 
-#### 4.1 Naming
+#### 4.1 Naming<a name="variables-naming"></a>
 
 - Use camelCase for variable naming. Keep the first letter lowercase.
 - If it is a global variable prepend with '__g__'.
@@ -348,7 +348,7 @@ static void cheak_dead_count(uint8_t deadCount)
 
 <hr>
 
-#### 4.2 Declaration
+#### 4.2 Declaration<a name="declaration"></a>
 - Global variables' definitions should be grouped and placed at the top of a source code file and should be declared as `static`.
 - Do not declare same type of variable on the same line. The cost of placing each declaration on a line of its own is low. By contrast, the risk that either the compiler or a maintainer will misunderstand your intentions is high.
 
@@ -365,7 +365,7 @@ char* myVariable;
 
 <hr>
 
-#### 4.3 Initialization
+#### 4.3 Initialization<a name="initialization"></a>
 
 - Do not initialize static and global variables to `0`, compiler will do it for you. When a varianle is declared inside a function it is not initialised.
 
@@ -386,9 +386,9 @@ Static analysis tools can scan all of the source code before each build, to warn
 <hr>
 <br>
 
-# 5. White Space
+# 5. White Space<a name="white-space"></a>
 
-#### 5.1 Spaces
+#### 5.1 Spaces<a name="spaces"></a>
 - Each of the keywords `if`, `while`, `for`, `switch`, and `return` should be followed by one space when there is additional program text on the same line.
 
 - Each semicolon separating the elements of a for statement should always be followed by one space.
@@ -450,7 +450,7 @@ uint32_t find_maximum(uint32_t a, uint32_t b)
 
 <hr>
 
-#### 5.2 Alignment
+#### 5.2 Alignment<a name="white-space-alignment"></a>
 
 - The names of variables within a series of declarations should have their first characters aligned.
 - The names of struct and union members should have their first characters aligned.
@@ -481,7 +481,7 @@ Visual alignments are easy on eyes and emphasizes similarity and also can be see
 related lines of code.
 <hr>
 
-#### 5.3 Indentation
+#### 5.3 Indentation<a name="indentation"></a>
 
 - Do not use tabs, use spaces instead.
 - Use 4 spaces per indent level.
@@ -502,7 +502,7 @@ void sys_error_handler(uint8_t err)
 
 <hr>
 
-#### 5.4 Tabs
+#### 5.4 Tabs<a name="tabs"></a>
 
 - The tab character (ASCII 0x09) should never appear within any source code file.
 - When indents are needed in the source code, align via spaces instead.
@@ -518,9 +518,9 @@ The width of the tab character varies by text editors and programmer preference,
 <hr>
 <br>
 
-# 6. Module Rules
+# 6. Module Rules<a name="module-rules"></a>
 
-#### 6.1 Naming
+#### 6.1 Naming<a name="module-rules-naming"></a>
 - All module names should consist entirely of lowercase letters, numbers, and underscores. No spaces should appear within the module’s header and source file names.
 - Any module containing a `main()` function should have the word “main” as part of its source file name.
 
@@ -528,7 +528,7 @@ Example: `adc.c`, `adc.h`
 
 <hr>
 
-#### 6.2 Header Files
+#### 6.2 Header Files<a name="header-files"></a>
 - There should always be precisely one header file for each source file and they should always have the same root name.
 - The header file should identify only the procedures, constants, and data types (macros, #define, typedefs) about which it is strictly necessary for other modules to be informed.
     - It is a preferred practice that no variable ever be declared (via `extern`) in a header file.
@@ -569,7 +569,7 @@ A header template file is available to download.
 
 <hr>
 
-#### 6.3 Source Files
+#### 6.3 Source Files<a name="source-files"></a>
 - Each source file should be comprised of some or all of the following sections, in the order listed: 
     - comment block; 
     - include statements; 
@@ -589,9 +589,9 @@ A source template file is available to download.
 <hr>
 <br>
 
-# 7. Data Type Rules
+# 7. Data Type Rules<a name="data-type-rules"></a>
 
-#### 7.1 Naming
+#### 7.1 Naming<a name="data-type-rules-naming"></a>
 - All new structures, unions, and enumerations should be declared via a `typedef` and a `name`.
 - The names of all new data types, including structures, unions, and enumerations, should use camelCase characters, with type at the beginning (s, u, e) and end with `_t`. The basic name doesn't need `_t`.
 
@@ -625,7 +625,7 @@ sStruct_t foo_var = {
 
 <hr>
 
-#### 7.2 Fixed-Width Integers
+#### 7.2 Fixed-Width Integers<a name="fixed-width-integers"></a>
 - Whenever the width, in bits or bytes, of an integer value matters in the program, one of the fixed-width data types should be used in place of `char`, `short`, `int`, `long`, or `long long`. 
 
 | Integer Width |  Signed  | Unsigned |
@@ -640,7 +640,7 @@ sStruct_t foo_var = {
 
 <hr>
 
-#### 7.3 Signed and Unsigned Integers
+#### 7.3 Signed and Unsigned Integers<a name="signed-and-unsigned-integers"></a>
 - Bit-fields should not be defined within signed integer types.
 - None of the bitwise operators (i.e., `&`, `|`, `~`, `^`, `<<`, and `>>`) should be used to manipulate signed integer data.
 - Signed integers should not be combined with unsigned integers in comparisons or expressions. 
@@ -664,7 +664,7 @@ Several details of the manipulation of binary data within signed integer contain
 
 <hr>
 
-#### 7.4 Floating Point
+#### 7.4 Floating Point<a name="floating-point"></a>
 - Avoid the use of floating-point constants and variables whenever possible. Fixed-point math may be an alternative.
 - When floating point calculations are necessary:
     - Use the C99 type names `float32_t`, `float64_t`, and `float128_t`.
@@ -675,7 +675,7 @@ Several details of the manipulation of binary data within signed integer contain
 
 <hr>
 
-#### 7.5 Structures and Unions
+#### 7.5 Structures and Unions<a name="structures-and-unions"></a>
 - Appropriate care should be taken to prevent the compiler from inserting padding bytes within struct or union types. To know more read [structure packing](https://mirzafahad.github.io/2018-12-11-structure-packing/).
 - Appropriate care should be taken to prevent the compiler from altering the intended order of the bits within bit-fields.
 
@@ -702,7 +702,7 @@ typedef struct sTimer
 
 <hr>
 
-#### 7.6 Booleans
+#### 7.6 Booleans<a name="booleans"></a>
 - Boolean variables should be declared as type bool.
 - Non-Boolean values should be converted to Boolean via the use of relational operators (e.g., `<` or `!=`), not via casts.
 
@@ -718,8 +718,8 @@ bool inMotion = (0 != speedInMph);
 <hr>
 <br>
 
-# 8. Statement Rules
-#### 8.1 Conditional Statements
+# 8. Statement Rules<a name="statement-rules"></a>
+#### 8.1 Conditional Statements<a name="conditional-statements"></a>
 - It is a preferred practice that the shortest (measured in lines of code) of the `if` and `else if` clauses should be placed first. Long clauses can distract the human eye from the decision-path logic. By putting the shorter clause earlier, the decision path becomes easier to follow. (And easier to follow is always good for reducing bugs.)
 - Nested `if…else` statements should not be deeper than two levels. Use function calls or switch statements to reduce complexity and aid understanding. Deeply nested `if…else` statements are a sure sign of a complex and fragile state machine implementation. There is always a safer and more readable way to do the same thing.
 - Assignments should not be made within an `if` or `else if` test.
@@ -745,7 +745,7 @@ else
 
 <hr>
 
-#### 8.2 Switch Statements
+#### 8.2 Switch Statements<a name="switch-statements"></a>
 - Each `case`'s content should be enclosed by braces (`{}`).
 - The `break` for each `case` should be indented to align with the associated `case`, rather than with the contents of the `case` code block. Switch statements are prone to errors such as omitted break statements and unhandled cases. By aligning the `case` labels with their `break` statements it is easier to spot a missing `break`.
 - All switch statements should contain a `default` block.
@@ -782,7 +782,7 @@ switch (err)
 
 <hr>
 
-#### 8.3 Loops
+#### 8.3 Loops<a name="loops"></a>
 - Magic numbers should not be used as the initial value or in the endpoint test of a `while`, `do…while`, or `for` loop.
 - Except for the initialization of a loop counter in the `for` loop and the change to the same variable in the same statement, no assignment should be made in any loop’s controlling expression.
 - Declare counter variables in `for` loop, unless if you need to access the variable later:
@@ -847,7 +847,7 @@ It is always important to synchronize the number of loop iterations to the size 
 
 <hr>
 
-#### 8.4 Equivalence Tests
+#### 8.4 Equivalence Tests<a name="equivalence-tests"></a>
 - When evaluating the equality of a variable against a constant, the constant should always be placed to the left of the equal-to operator (==).
 
 Example:
