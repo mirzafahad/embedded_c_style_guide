@@ -35,11 +35,11 @@
     - [7.3 Signed and Unsigned Integers](#signed-and-unsigned-integers)
     - [7.4 Floating Point](#floating-point)
     - [7.5 Structures and Unions](#structures-and-unions)
-    - [7.6 Booleans](#7.6-booleans)
+    - [7.6 Booleans](#booleans)
   - [8. Statement Rules](#statement-rules)
     - [8.1 Conditional Statements](#conditional-statements)
     - [8.2 Switch Statements](#switch-statements)
-    - [8.3 Loops](#8.3-loops)
+    - [8.3 Loops](#loops)
     - [8.4 Equivalence Tests](#equivalence-tests)
 
 
