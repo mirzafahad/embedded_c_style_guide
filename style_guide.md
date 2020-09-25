@@ -1,6 +1,6 @@
 # Table of Contents
 
-  - [1. General Rule](#1.-General-Rule)
+  - [1. General Rule](#user-content-1.-General-Rule)
     - [1.1 Line Width](#1.1-Line-Width)
     - [1.2 Braces](#1.2-Braces)
     - [1.3 Parentheses](#1.3-Parentheses)
@@ -11,10 +11,10 @@
     - [3.1 Naming](#3.1-Naming)
     - [3.2 Alignment](#3.2-Alignment)
     - [3.3 Limiting scope](#3.3-Limiting-scope)
-    - [3.4 Divide and Conquer](3.4-Divide-and-Conquer)
-    - [3.5 CONST argument](3.5-CONST-argument)
-    - [3.6 Parameterized Macro](3.6-Parameterized-Macro)
-    - [3.7 Thread of Execution](3.7-Thread-of-Execution)
+    - [3.4 Divide and Conquer](#3.4-Divide-and-Conquer)
+    - [3.5 CONST argument](#3.5-CONST-argument)
+    - [3.6 Parameterized Macro](#3.6-Parameterized-Macro)
+    - [3.7 Thread of Execution](#3.7-Thread-of-Execution)
     - [3.8 Interrupt Service Routines](#3.8-Interrupt-Service-Routines)
   - [4. Variables](#4.-Variables)
     - [4.1 Naming](#4.1-Naming)
