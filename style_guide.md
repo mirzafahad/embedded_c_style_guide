@@ -1,6 +1,6 @@
 # Table of Contents
 
-  - [1. General Rule](#General-Rule)
+  - [1. General Rule](#general-rule)
     - [1.1 Line Width](#1.1-Line-Width)
     - [1.2 Braces](#1.2-Braces)
     - [1.3 Parentheses](#1.3-Parentheses)
@@ -43,7 +43,7 @@
     - [8.4 Equivalence Tests](#8.4-Equivalence-Tests)
 
 
-# 1. General Rule<a name="General Rule"></a>
+# 1. General Rule<a name="general-rule"></a>
 
 #### 1.1 Line Width
 Limit the line width to 80 characters. This is especially helpful if somebody wants to print codes on a paper.
