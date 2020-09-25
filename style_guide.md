@@ -43,7 +43,7 @@
     - [8.4 Equivalence Tests](#8.4-Equivalence-Tests)
 
 
-# General Rule
+# 1. General Rule<a name="General Rule"></a>
 
 #### 1.1 Line Width
 Limit the line width to 80 characters. This is especially helpful if somebody wants to print codes on a paper.
