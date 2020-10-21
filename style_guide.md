@@ -310,7 +310,7 @@ Each task in a real-time operating system (RTOS) is like a mini-main(), typicall
 #### 4.1 Naming<a name="variables-naming"></a>
 
 - Use camelCase for variable naming. Keep the first letter lowercase.
-- If it is a global variable prepend with '__g__'.
+- If it is a global variable then capitalize the first letter.
 - Function's arguments are local variables.
 - A macro name should not contain any lowercase letters (only if a `const` cannot be used).
 - No variable should have a name that begins with an underscore.
@@ -321,7 +321,7 @@ Each task in a real-time operating system (RTOS) is like a mini-main(), typicall
 #define MAX_ARRAY_LENGTH    (100U)
 
 // Global variable
-static eDifficultyLevel_t gCurrentDifficultyLevel = LEVEL_HARD;
+static eDifficultyLevel_t CurrentDifficultyLevel = LEVEL_HARD;
 
 static void cheak_dead_count(uint8_t deadCount)
 {
@@ -335,7 +335,7 @@ static void cheak_dead_count(uint8_t deadCount)
     }
 
     // Died too many times, check difficulty level
-    if (gCurrentDifficultyLevel != LEVEL_NOOB)
+    if (CurrentDifficultyLevel != LEVEL_NOOB)
     {
         printf("Lowering your difficulty level might help!");
     }
